@@ -1,0 +1,15 @@
+# Node.js 
+node_modules/
+package-lock.json
+
+# Remix build 
+/build
+/public/build
+
+# Vite / Remix cache
+.cache/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
