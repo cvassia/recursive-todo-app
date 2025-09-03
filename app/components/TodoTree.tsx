@@ -24,7 +24,7 @@ function Item({ node, isMain = false }: { node: TodoNode; isMain?: boolean }) {
   const [adding, setAdding] = useState(false);
   const [prevCount, setPrevCount] = useState(node.children.length);
 
-  // clear input after submit
+  // remove and clear input after submit
   React.useEffect(() => {
     if (adding && node.children.length > prevCount) {
       const timer = setTimeout(() => {

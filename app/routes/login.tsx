@@ -1,43 +1,43 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, useActionData, useNavigation } from "@remix-run/react";
+import { useActionData, useNavigation, Link } from "@remix-run/react";
 import { z } from "zod";
-import { Account } from "node-appwrite";
 
-import { getClient } from "../lib/appwrite.server";
+import { Client, Account } from "appwrite";
 import { getSession, commitSession } from "../sessions.server";
-
 import { Card, Button, FormCol, Label, ErrorText, MutedText } from "../components/styles";
 
+// Validation schema
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string().email("Email must include '@' and be valid"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 export async function action({ request }: ActionFunctionArgs) {
   const form = await request.formData();
   const email = String(form.get("email") || "");
   const password = String(form.get("password") || "");
-  const parsed = schema.safeParse({ email, password });
 
+  const parsed = schema.safeParse({ email, password });
   if (!parsed.success) {
     return json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
   try {
-    const client = getClient();
+    const client = new Client()
+      .setEndpoint(process.env.APPWRITE_ENDPOINT!)
+      .setProject(process.env.APPWRITE_PROJECT_ID!);
+
     const account = new Account(client);
 
-    await account.createSession(email, password);
+    const session = await account.createEmailPasswordSession(email, password);
 
-    const user = await account.get();
-
-    const session = await getSession(request.headers.get("Cookie"));
-    session.set("userId", user.$id);
-    session.set("email", user.email);
+    const remixSession = await getSession(request.headers.get("Cookie"));
+    remixSession.set("userId", session.userId);
+    remixSession.set("email", email);
 
     return redirect("/", {
-      headers: { "Set-Cookie": await commitSession(session) },
+      headers: { "Set-Cookie": await commitSession(remixSession) },
     });
   } catch (e: any) {
     return json({ errorMessage: e?.message || "Login failed" }, { status: 400 });
@@ -62,16 +62,10 @@ export default function Login() {
           <input name="password" type="password" required placeholder="********" />
         </Label>
 
-        {actionData && "error" in actionData && (
-          <ErrorText>{Object.values(actionData.error).flat().join(", ")}</ErrorText>
-        )}
-        {actionData && "errorMessage" in actionData && (
-          <ErrorText>{actionData.errorMessage}</ErrorText>
-        )}
-
+        {actionData && "errorMessage" in actionData && <ErrorText>{actionData.errorMessage}</ErrorText>}
+        {actionData && "error" in actionData && <ErrorText>{Object.values(actionData.error).flat().join(", ")}</ErrorText>}
         <Button disabled={busy}>{busy ? "Signing in..." : "Log in"}</Button>
       </FormCol>
-
       <p>
         <MutedText>
           New here? <Link to="/signup">Create an account</Link>

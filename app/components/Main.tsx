@@ -3,7 +3,6 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-    NavLink
 } from "@remix-run/react";
 import {
     Header,

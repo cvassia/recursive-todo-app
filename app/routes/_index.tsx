@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import React from "react";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation, useActionData } from "@remix-run/react";
 
 import { requireUser } from "../sessions.server";
 import { listTodosForOwner, createTodo, toggleTodo, deleteTodo } from "../models/todo.server";
@@ -54,7 +54,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Index() {
   const { user, tree } = useLoaderData<typeof loader>();
+
   const [isClient, setIsClient] = React.useState(false);
+
+  const $form = React.useRef<HTMLFormElement>(null)
+
+  const navigation = useNavigation()
+
+  React.useEffect(function resetFormOnSuccess() {
+    if (navigation.state === "idle") {
+      $form.current?.reset()
+    }
+  }, [navigation.state])
 
   React.useEffect(() => {
     setIsClient(true);
@@ -64,7 +75,10 @@ export default function Index() {
     <Card>
       <h2>Hello, {user.email}</h2>
       <Text>Create tasks, then nest sub-tasks infinitely.</Text>
-      <FormCol method="post">
+      <FormCol
+        method="post"
+        ref={$form}
+      >
         <input type="hidden" name="_action" value="add" />
         <input
           name="title"

@@ -25,7 +25,7 @@ A to‑do app where each task can have infinite nested sub‑tasks. Built with R
 ### CI/CD Plan Steps
 
 1. **Checkout Code**
-   - Pull the latest code from the Git repository : .
+   - Pull the latest code from the Git repository : https://github.com/cvassia/recursive-todo-app.git.
 
 2. **Install Dependencies**
    - Run "npm install" to install all required Node.js packages.
