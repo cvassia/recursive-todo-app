@@ -5,6 +5,7 @@ A to‑do app where each task can have infinite nested sub‑tasks. Built with R
 ## Features
 
 - signup - login: register/login with email/password, the new user's credentials stored in Appwrite.
+- Using an Appwrite Function a welcome email is automatically send to the user upon successful registration.
 - Recursive to‑do list component with add / add sub‑task / mark complete / delete.
 - Form validation using Zod.
 - Unit test for the tree builder using Vitest.

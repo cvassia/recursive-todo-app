@@ -6,8 +6,7 @@ import { z } from "zod";
 import { getAdminClient } from "../lib/appwrite.server";
 import { getSession, commitSession } from "../sessions.server";
 import { Card, Button, FormCol, Label, ErrorText, MutedText } from "../components/styles";
-import { ID } from "node-appwrite";
-
+import { ID, Functions } from "node-appwrite";
 
 // Validation schema
 const schema = z.object({
@@ -26,12 +25,23 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const { users } = getAdminClient();
+    const { users, client } = getAdminClient();
+
     const user = await users.create({
       userId: ID.unique(),
       email,
       password,
     });
+
+    try {
+      const functions = new Functions(client);
+      await functions.createExecution(
+        "68b956040022ae67ab27",
+        JSON.stringify({ email: user.email })
+      );
+    } catch (err) {
+      console.warn("Failed to send welcome email:", err);
+    }
 
     const session = await getSession(request.headers.get("Cookie"));
     session.set("userId", user.$id);
@@ -62,8 +72,13 @@ export default function Signup() {
           Password
           <input name="password" type="password" required placeholder="********" />
         </Label>
-        {actionData && "errorMessage" in actionData && <ErrorText>{actionData.errorMessage}</ErrorText>}
-        {actionData && "error" in actionData && <ErrorText>{Object.values(actionData.error).flat().join(", ")}</ErrorText>}
+
+        {actionData && "errorMessage" in actionData && (
+          <ErrorText>{actionData.errorMessage}</ErrorText>
+        )}
+        {actionData && "error" in actionData && (
+          <ErrorText>{Object.values(actionData.error).flat().join(", ")}</ErrorText>
+        )}
         <Button disabled={busy}>{busy ? "Creating..." : "Sign up"}</Button>
       </FormCol>
       <p>
