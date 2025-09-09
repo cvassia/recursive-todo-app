@@ -1,5 +1,5 @@
-import { ID } from "node-appwrite";
-import { getAdminClient, dbIds, Q } from "../lib/appwrite.server";
+import { ID } from 'node-appwrite';
+import { getAdminClient, dbIds, Q } from '../lib/appwrite.server';
 
 export type TodoDoc = {
   $id: string;
@@ -13,8 +13,8 @@ export type TodoDoc = {
 export async function listTodosForOwner(ownerId: string) {
   const { databases } = getAdminClient();
   const res = await databases.listDocuments(dbIds.databaseId, dbIds.tasksId, [
-    Q.equal("ownerId", ownerId),
-    Q.orderAsc("$createdAt"),
+    Q.equal('ownerId', ownerId),
+    Q.orderAsc('$createdAt'),
     Q.limit(1000)
   ]);
   return res.documents as unknown as TodoDoc[];

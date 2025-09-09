@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 export default async function (context) {
   const payload = context.req.body ? JSON.parse(context.req.body) : {};
@@ -18,14 +18,14 @@ export default async function (context) {
     await transporter.sendMail({
       from: process.env.SMTP_USERNAME,
       to: payload.email || process.env.SUBMIT_EMAIL,
-      subject: "Welcome to Recursive To-Do App 🎉",
-      text: "Thanks for signing up!",
-      html: "<h1>Welcome!</h1><p>We’re glad you joined!!</p>",
+      subject: 'Welcome to Recursive To-Do App 🎉',
+      text: 'Thanks for signing up!',
+      html: '<h1>Welcome!</h1><p>We’re glad you joined!!</p>',
     });
 
-    return context.res.send("Email sent", 200);
+    return context.res.send('Email sent', 200);
   } catch (err) {
-    console.error("Email error:", err);
+    console.error('Email error:', err);
     return context.res.send(`Error: ${err.message}`, 500);
   }
 }

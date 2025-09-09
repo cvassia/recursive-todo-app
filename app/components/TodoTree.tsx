@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Form } from "@remix-run/react";
-import { Trash2 } from "lucide-react";
+import React, { useState } from 'react';
+import { Form } from '@remix-run/react';
+import { Trash2 } from 'lucide-react';
 
-import type { TodoNode } from "../utils/tree";
+import type { TodoNode } from '../utils/tree';
 import {
   List,
   Row,
@@ -13,7 +13,7 @@ import {
   Button,
   InlineForm,
   Badge,
-} from "./styles";
+} from './styles';
 
 type Props = {
   nodes: TodoNode[];
@@ -48,7 +48,7 @@ function Item({ node, isMain = false }: { node: TodoNode; isMain?: boolean }) {
             value={(!node.completed).toString()}
           />
           <StatusButton $completed={node.completed} aria-label="toggle complete">
-            {node.completed ? "✓" : ""}
+            {node.completed ? '✓' : ''}
           </StatusButton>
         </Form>
 
@@ -83,7 +83,7 @@ function Item({ node, isMain = false }: { node: TodoNode; isMain?: boolean }) {
         </InlineForm>
         {node.children.length > 0 && (
           <OpenSubTasksButton onClick={() => setOpen((o) => !o)} aria-label="toggle open">
-            {open ? "▼" : "▶"}
+            {open ? '▼' : '▶'}
           </OpenSubTasksButton>
         )}
       </Row>

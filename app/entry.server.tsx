@@ -1,7 +1,7 @@
-import { RemixServer } from "@remix-run/react";
-import { renderToString } from "react-dom/server";
-import type { EntryContext } from "@remix-run/node";
-import { ServerStyleSheet } from "styled-components";
+import { RemixServer } from '@remix-run/react';
+import { renderToString } from 'react-dom/server';
+import type { EntryContext } from '@remix-run/node';
+import { ServerStyleSheet } from 'styled-components';
 
 export default function handleRequest(
   request: Request,
@@ -17,9 +17,9 @@ export default function handleRequest(
     );
 
     const styles = sheet.getStyleTags();
-    responseHeaders.set("Content-Type", "text/html");
+    responseHeaders.set('Content-Type', 'text/html');
 
-    return new Response("<!DOCTYPE html>" + markup.replace("</head>", `${styles}</head>`), {
+    return new Response('<!DOCTYPE html>' + markup.replace('</head>', `${styles}</head>`), {
       status: responseStatusCode,
       headers: responseHeaders,
     });

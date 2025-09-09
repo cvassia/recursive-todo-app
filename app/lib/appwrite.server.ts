@@ -1,4 +1,4 @@
-import { Client, Databases, Users, Account, Query, Functions } from "node-appwrite";
+import { Client, Databases, Users, Account, Query, Functions } from 'node-appwrite';
 
 
 // Regular client (no API key) -- login/signup

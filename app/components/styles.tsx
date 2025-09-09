@@ -1,8 +1,8 @@
-import styledImport from "styled-components";
+import styledImport from 'styled-components';
 import {
   NavLink,
   Form
-} from "@remix-run/react";
+} from '@remix-run/react';
 
 
 const styled = (styledImport as any).default || styledImport;
@@ -25,7 +25,7 @@ export const Card = styled.div`
 `;
 
 export const List = styled.li<StyleProps>`
-  border-bottom: ${(props: StyleProps) => props.$isMain ? "2px solid #e5e7eb" : undefined};
+  border-bottom: ${(props: StyleProps) => props.$isMain ? '2px solid #e5e7eb' : undefined};
 `;
 
 export const Row = styled.div`
@@ -160,8 +160,8 @@ export const StatusButton = styled.button<StyleProps>`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  border: 2px solid ${(props: StyleProps) => (props.$completed ? "#4CAF50" : "#ccc")};
-  background-color: ${(props: StyleProps) => (props.$completed ? "#4CAF50" : "transparent")};
+  border: 2px solid ${(props: StyleProps) => (props.$completed ? '#4CAF50' : '#ccc')};
+  background-color: ${(props: StyleProps) => (props.$completed ? '#4CAF50' : 'transparent')};
   color: white;
   font-size: 1rem;
   cursor: pointer;
@@ -200,9 +200,9 @@ export const Badge = styled.span`
 
 
 // Inputs 
-export const TextInput = styled.input.attrs({ type: "text" })``;
-export const EmailInput = styled.input.attrs({ type: "email" })``;
-export const PasswordInput = styled.input.attrs({ type: "password" })``;
+export const TextInput = styled.input.attrs({ type: 'text' })``;
+export const EmailInput = styled.input.attrs({ type: 'email' })``;
+export const PasswordInput = styled.input.attrs({ type: 'password' })``;
 
 
 
@@ -231,8 +231,8 @@ padding: 1rem;
 `;
 
 export const Title = styled.span<StyleProps>`
-  color: ${(props: StyleProps) => props.$completed ? "#b7ebb9" : "inherit"};
-  text-decoration: ${(props: StyleProps) => props.$completed ? "line-through" : "none"};
+  color: ${(props: StyleProps) => props.$completed ? '#b7ebb9' : 'inherit'};
+  text-decoration: ${(props: StyleProps) => props.$completed ? 'line-through' : 'none'};
 `;
 
 

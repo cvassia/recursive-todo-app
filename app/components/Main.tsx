@@ -3,14 +3,14 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-} from "@remix-run/react";
+} from '@remix-run/react';
 import {
     Header,
     Link,
     LogOutButton,
     Nav,
     OutletContainer,
-} from "./styles";
+} from './styles';
 
 type User = {
     id: string;

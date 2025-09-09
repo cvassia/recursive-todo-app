@@ -1,12 +1,12 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import React from "react";
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, useNavigation, useActionData } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
+import React from 'react';
+import { json, redirect } from '@remix-run/node';
+import { useLoaderData, useNavigation } from '@remix-run/react';
 
-import { requireUser } from "../sessions.server";
-import { listTodosForOwner, createTodo, toggleTodo, deleteTodo } from "../models/todo.server";
-import { buildTree } from "../utils/tree";
-import TodoTree from "../components/TodoTree";
+import { requireUser } from '../sessions.server';
+import { listTodosForOwner, createTodo, toggleTodo, deleteTodo } from '../models/todo.server';
+import { buildTree } from '../utils/tree';
+import TodoTree from '../components/TodoTree';
 import {
   Card,
   FlexCol,
@@ -14,7 +14,7 @@ import {
   Text,
   Button,
   Separator
-} from "../components/styles";
+} from '../components/styles';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request);
@@ -26,30 +26,30 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const user = await requireUser(request);
   const form = await request.formData();
-  const _action = String(form.get("_action") || "");
+  const _action = String(form.get('_action') || '');
 
-  if (_action === "add") {
-    const title = String(form.get("title") || "").slice(0, 200);
-    const parentId = form.get("parentId") ? String(form.get("parentId")) : null;
-    if (!title) return redirect("/");
+  if (_action === 'add') {
+    const title = String(form.get('title') || '').slice(0, 200);
+    const parentId = form.get('parentId') ? String(form.get('parentId')) : null;
+    if (!title) return redirect('/');
     await createTodo({ title, ownerId: user.id, parentId });
-    return redirect("/");
+    return redirect('/');
   }
 
-  if (_action === "toggle") {
-    const id = String(form.get("id") || "");
-    const completed = String(form.get("completed") || "false") === "true";
+  if (_action === 'toggle') {
+    const id = String(form.get('id') || '');
+    const completed = String(form.get('completed') || 'false') === 'true';
     await toggleTodo({ id, completed });
-    return redirect("/");
+    return redirect('/');
   }
 
-  if (_action === "delete") {
-    const id = String(form.get("id") || "");
+  if (_action === 'delete') {
+    const id = String(form.get('id') || '');
     await deleteTodo(id);
-    return redirect("/");
+    return redirect('/');
   }
 
-  return redirect("/");
+  return redirect('/');
 }
 
 export default function Index() {
@@ -57,15 +57,15 @@ export default function Index() {
 
   const [isClient, setIsClient] = React.useState(false);
 
-  const $form = React.useRef<HTMLFormElement>(null)
+  const $form = React.useRef<HTMLFormElement>(null);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   React.useEffect(function resetFormOnSuccess() {
-    if (navigation.state === "idle") {
-      $form.current?.reset()
+    if (navigation.state === 'idle') {
+      $form.current?.reset();
     }
-  }, [navigation.state])
+  }, [navigation.state]);
 
   React.useEffect(() => {
     setIsClient(true);
