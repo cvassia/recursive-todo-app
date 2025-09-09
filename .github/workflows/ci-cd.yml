@@ -49,12 +49,21 @@ jobs:
 
       # 6. Deploy to Vercel
       - name: Deploy to Vercel
-        run: npx vercel deploy --prod --token $VERCEL_TOKEN --confirm \
-          --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+        run: |
+            npm install -g vercel
+            npx vercel deploy ./build --prod --token $VERCEL_TOKEN --yes
 
+      
       # 7. Deploy / redeploy Appwrite function
       - name: Deploy Appwrite Function
         run: |
           npm install -g appwrite-cli
-          appwrite functions update $APPWRITE_FUNCTION_ID --project=$APPWRITE_PROJECT --endpoint=$APPWRITE_ENDPOINT --key=$APPWRITE_API_KEY
-          appwrite functions deploy $APPWRITE_FUNCTION_ID --project=$APPWRITE_PROJECT --endpoint=$APPWRITE_ENDPOINT --key=$APPWRITE_API_KEY
+          appwrite functions update $APPWRITE_FUNCTION_ID \
+          --project=$APPWRITE_PROJECT \
+          --endpoint=$APPWRITE_ENDPOINT \
+          --key=$APPWRITE_API_KEY \
+          --env-file .env
+            appwrite functions deploy $APPWRITE_FUNCTION_ID \
+          --project=$APPWRITE_PROJECT \
+          --endpoint=$APPWRITE_ENDPOINT \
+          --key=$APPWRITE_API_KEY
