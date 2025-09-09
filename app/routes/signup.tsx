@@ -36,7 +36,7 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
       const functions = new Functions(client);
       await functions.createExecution(
-        "68b956040022ae67ab27",
+        process.env.APPWRITE_FUNCTION_ID!,
         JSON.stringify({ email: user.email })
       );
     } catch (err) {
