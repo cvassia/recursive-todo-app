@@ -1,0 +1,60 @@
+name: CI/CD Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Vercel deployment
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      # Appwrite CLI
+      APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
+      APPWRITE_PROJECT: ${{ secrets.APPWRITE_PROJECT }}
+      APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+      APPWRITE_FUNCTION_ID: ${{ secrets.APPWRITE_FUNCTION_ID }}
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Install dependencies
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+
+      # 3. Lint & format
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run format
+
+      # 4. Run tests
+      - name: Unit Tests
+        run: npm test
+      - name: UI / Integration Tests
+        run: npm run test:ui
+
+      # 5. Build Remix app
+      - name: Build
+        run: npm run build
+
+      # 6. Deploy to Vercel
+      - name: Deploy to Vercel
+        run: npx vercel deploy --prod --token $VERCEL_TOKEN --confirm \
+          --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
+
+      # 7. Deploy / redeploy Appwrite function
+      - name: Deploy Appwrite Function
+        run: |
+          npm install -g appwrite-cli
+          appwrite functions update $APPWRITE_FUNCTION_ID --project=$APPWRITE_PROJECT --endpoint=$APPWRITE_ENDPOINT --key=$APPWRITE_API_KEY
+          appwrite functions deploy $APPWRITE_FUNCTION_ID --project=$APPWRITE_PROJECT --endpoint=$APPWRITE_ENDPOINT --key=$APPWRITE_API_KEY
