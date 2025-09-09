@@ -47,7 +47,7 @@ A to‑do app where each task can have infinite nested sub‑tasks. Built with R
    - Compile the Remix application using `npm run build`.
 
 7. **Deployment**
-   - Deploy the built application to a hosting platform (Vercel or Netlify).
+   - Deploy the built application to a hosting platform - Vercel.
 
 
 ## Tools / Platforms:

@@ -41,26 +41,6 @@
     },
     "functions": [
         {
-            "$id": "68b86825002d4a3196c3",
-            "execute": [
-                "any"
-            ],
-            "name": "welcome-email",
-            "enabled": true,
-            "logging": true,
-            "runtime": "node-22",
-            "scopes": [
-                "users.read"
-            ],
-            "events": [],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "src/main.js",
-            "commands": "npm install",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/welcome-email"
-        },
-        {
             "$id": "68b956040022ae67ab27",
             "execute": [
                 "any"
@@ -70,7 +50,38 @@
             "logging": true,
             "runtime": "node-22",
             "scopes": [
-                "users.read"
+                "users.read",
+                "databases.read",
+                "databases.write",
+                "tables.read",
+                "collections.read",
+                "tables.write",
+                "collections.write",
+                "columns.read",
+                "attributes.read",
+                "columns.write",
+                "attributes.write",
+                "indexes.read",
+                "indexes.write",
+                "rows.read",
+                "documents.read",
+                "rows.write",
+                "documents.write",
+                "functions.read",
+                "functions.write",
+                "execution.read",
+                "execution.write",
+                "locale.read",
+                "avatars.read",
+                "health.read",
+                "migrations.read",
+                "migrations.write",
+                "tokens.read",
+                "tokens.write",
+                "sites.read",
+                "sites.write",
+                "log.read",
+                "log.write"
             ],
             "events": [],
             "schedule": "",
