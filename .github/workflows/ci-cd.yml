@@ -23,51 +23,52 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Install dependencies
+      # 2. Install Node.js
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 3. Lint & format
+      # 4. Lint & format
       - name: Lint
         run: npm run lint
       - name: Format
         run: npm run format
 
-      # 4. Run tests
+      # 5. Run tests
       - name: Unit Tests
         run: npm test
       - name: UI / Integration Tests
         run: npm run test:ui
 
-      # 5. Build Remix app
+      # 6. Build Remix app
       - name: Build
         run: npm run build
 
-      # 6. Deploy to Vercel
+      # 7. Deploy to Vercel
       - name: Deploy to Vercel
         run: |
-            npm install -g vercel
-            npx vercel deploy ./build --prod --token $VERCEL_TOKEN --yes
+          npm install -g vercel
+          npx vercel deploy ./build --prod --token $VERCEL_TOKEN --yes
 
-      
-      # 7. Deploy / redeploy Appwrite function
+      # 8. Deploy / redeploy Appwrite function
       - name: Deploy Appwrite Function
         env:
-        APPWRITE_FUNCTION_ID: ${{ secrets.APPWRITE_FUNCTION_ID }}
-        APPWRITE_PROJECT: ${{ secrets.APPWRITE_PROJECT_ID }}
-        APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
-        APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+          APPWRITE_FUNCTION_ID: ${{ secrets.APPWRITE_FUNCTION_ID }}
+          APPWRITE_PROJECT: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
         run: |
-            npm install -g appwrite-cli
-            appwrite functions update $APPWRITE_FUNCTION_ID \
-              --project=$APPWRITE_PROJECT \
-              --endpoint=$APPWRITE_ENDPOINT \
-              --key=$APPWRITE_API_KEY
-            appwrite functions deploy $APPWRITE_FUNCTION_ID \
-              --project=$APPWRITE_PROJECT \
-              --endpoint=$APPWRITE_ENDPOINT \
-              --key=$APPWRITE_API_KEY
+          npm install -g appwrite-cli
+          appwrite functions update $APPWRITE_FUNCTION_ID \
+            --project=$APPWRITE_PROJECT \
+            --endpoint=$APPWRITE_ENDPOINT \
+            --key=$APPWRITE_API_KEY
+          appwrite functions deploy $APPWRITE_FUNCTION_ID \
+            --project=$APPWRITE_PROJECT \
+            --endpoint=$APPWRITE_ENDPOINT \
+            --key=$APPWRITE_API_KEY
