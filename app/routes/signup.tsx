@@ -10,21 +10,24 @@ import { ID, Functions } from 'node-appwrite';
 
 // Validation schema
 const schema = z.object({
-  email: z.string().email('Email must include \'@\' and be valid'),
+  email: z.string().email('Email must include "@" and be valid'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
 export async function action({ request }: ActionFunctionArgs) {
-  const form = await request.formData();
-  const email = String(form.get('email') || '');
-  const password = String(form.get('password') || '');
-
-  const parsed = schema.safeParse({ email, password });
-  if (!parsed.success) {
-    return json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
-  }
-
   try {
+    const form = await request.formData();
+    const email = String(form.get('email') ?? '').trim();
+    const password = String(form.get('password') ?? '').trim();
+
+    const parsed = schema.safeParse({ email, password });
+    if (!parsed.success) {
+      return json(
+        { error: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+
     const { users, client } = getAdminClient();
 
     const user = await users.create({
@@ -33,25 +36,36 @@ export async function action({ request }: ActionFunctionArgs) {
       password,
     });
 
-    try {
-      const functions = new Functions(client);
-      await functions.createExecution(
-        process.env.APPWRITE_FUNCTION_ID!,
-        JSON.stringify({ email: user.email })
-      );
-    } catch (err) {
-      console.warn('Failed to send welcome email:', err);
+    const functionId = process.env.APPWRITE_FUNCTION_ID;
+    if (functionId && user.email) {
+      try {
+        const functions = new Functions(client);
+        await functions.createExecution(
+          functionId,
+          JSON.stringify({ email: user.email })
+        );
+      } catch (err) {
+        console.warn('Failed to send welcome email:', err);
+      }
+    } else if (!functionId) {
+      console.warn('APPWRITE_FUNCTION_ID not set in environment');
+    } else if (!user.email) {
+      console.warn('User email undefined');
     }
 
     const session = await getSession(request.headers.get('Cookie'));
-    session.set('userId', user.$id);
-    session.set('email', user.email);
+    session.set('userId', user.$id ?? '');
+    session.set('email', user.email ?? '');
 
     return redirect('/', {
       headers: { 'Set-Cookie': await commitSession(session) },
     });
   } catch (e: any) {
-    return json({ errorMessage: e?.message || 'Failed to sign up' }, { status: 400 });
+    console.error('Signup failed:', e);
+    return json(
+      { errorMessage: e?.message ?? 'Failed to sign up' },
+      { status: 400 }
+    );
   }
 }
 
@@ -77,7 +91,12 @@ export default function Signup() {
           <ErrorText>{actionData.errorMessage}</ErrorText>
         )}
         {actionData && 'error' in actionData && (
-          <ErrorText>{Object.values(actionData.error).flat().join(', ')}</ErrorText>
+          <ErrorText>
+            {Object.values(actionData.error)
+              .flat()
+              .filter(Boolean)
+              .join(', ')}
+          </ErrorText>
         )}
         <Button disabled={busy}>{busy ? 'Creating...' : 'Sign up'}</Button>
       </FormCol>
