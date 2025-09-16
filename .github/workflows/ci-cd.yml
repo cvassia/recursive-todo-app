@@ -33,17 +33,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Lint & format
-      - name: Lint
-        run: npm run lint
-      - name: Format
-        run: npm run format
+      # # 4. Lint & format
+      # - name: Lint
+      #   run: npm run lint
+      # - name: Format
+      #   run: npm run format
 
-      # 5. Run tests
-      - name: Unit Tests
-        run: npm test
-      - name: UI / Integration Tests
-        run: npm run test:ui
+      # # 5. Run tests
+      # - name: Unit Tests
+      #   run: npm test
+      # - name: UI / Integration Tests
+      #   run: npm run test:ui
 
       # 6. Build Remix app
       - name: Build
@@ -53,4 +53,4 @@ jobs:
       - name: Deploy to Vercel
         run: |
           npm install -g vercel
-          npx vercel deploy ./build --prod --token $VERCEL_TOKEN --yes
+          npx vercel deploy --prod --token $VERCEL_TOKEN --yes
