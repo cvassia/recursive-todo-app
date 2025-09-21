@@ -105,16 +105,16 @@ jobs:
 
       # 7. Deploy to Appwrite SSR Site
       - name: Deploy to Appwrite
-          run: |
-            npm install -g appwrite
-            appwrite projects deployments create \
-            --projectId $APPWRITE_PROJECT_ID \
-            --file . \
-            --entrypoint build/index.js \
-            --siteId $APPWRITE_SITE_ID \
-            --env-file .env \
-            --endpoint $APPWRITE_ENDPOINT \
-            --api-key $APPWRITE_API_KEY
+        run: |
+          npm install -g appwrite
+          appwrite projects deployments create \
+          --projectId $APPWRITE_PROJECT_ID \
+          --file . \
+          --entrypoint build/index.js \
+          --siteId $APPWRITE_SITE_ID \
+          --env-file .env \
+          --endpoint $APPWRITE_ENDPOINT \
+          --api-key $APPWRITE_API_KEY
 
 
 
