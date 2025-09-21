@@ -113,7 +113,7 @@ jobs:
         run: |
           appwrite client \
             --endpoint $APPWRITE_ENDPOINT \
-            --projectId $APPWRITE_PROJECT_ID \
+            --project-id $APPWRITE_PROJECT_ID \
             --key $APPWRITE_API_KEY
           
           appwrite deploy function \
