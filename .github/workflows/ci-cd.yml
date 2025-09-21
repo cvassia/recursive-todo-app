@@ -87,11 +87,23 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Build Remix app
+      # 4. Lint & format
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run format
+
+      # 5. Run tests
+      - name: Unit Tests
+        run: npm test
+      - name: UI / Integration Tests
+        run: npm run test:ui
+
+      # 6. Build Remix app
       - name: Build
         run: npm run build
 
-      # 5. Deploy to Appwrite SSR Site
+      # 7. Deploy to Appwrite SSR Site
       - name: Deploy to Appwrite
         run: |
           npm install -g appwrite

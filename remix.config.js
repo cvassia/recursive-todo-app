@@ -8,6 +8,6 @@ export default {
   serverModuleFormat: 'esm',
   future: {
     v7_relativeSplatPath: true,
-    v2_routeConvention: true
+    // v2_routeConvention: true
   }
 };
