@@ -116,10 +116,10 @@ jobs:
             --project-id $APPWRITE_PROJECT_ID \
             --key $APPWRITE_API_KEY
           
-          appwrite deploy function \
-            --functionId $APPWRITE_SITE_ID \
-            --code . \
-            --entrypoint build/index.js
+          appwrite storage files create \
+            --bucket-id $APPWRITE_SITE_ID \
+            --file ./build \
+            --read "role:all"
 
 
 
