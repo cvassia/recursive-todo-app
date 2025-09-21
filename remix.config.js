@@ -5,11 +5,9 @@ dotenv.config();
 export default {
   ignoredRouteFiles: ['**/.*'],
   serverBuildPath: 'build/index.js',
-  serverModuleFormat: 'cjs',
-  appDirectory: 'app',
-  assetsBuildDirectory: 'public/build',
+  serverModuleFormat: 'esm',
   future: {
     v7_relativeSplatPath: true,
-    // v2_routeConvention: true
+    v2_routeConvention: true
   }
 };

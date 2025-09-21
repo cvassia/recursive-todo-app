@@ -108,18 +108,20 @@ jobs:
       - name: Install Appwrite CLI
         run: npm install -g appwrite-cli
 
-      # 8. Deploy to Appwrite SSR Site
-      - name: Deploy to Appwrite
+      # 7. Deploy to Appwrite SSR Site
+      - name: Deploy SSR Site to Appwrite
         run: |
           appwrite client \
             --endpoint $APPWRITE_ENDPOINT \
             --project-id $APPWRITE_PROJECT_ID \
             --key $APPWRITE_API_KEY
-          
-          appwrite storage files create \
-            --bucket-id $APPWRITE_SITE_ID \
-            --file ./build \
-            --read "role:all"
+
+          appwrite projects deployments create \
+            --project-id $APPWRITE_PROJECT_ID \
+            --site-id $APPWRITE_SITE_ID \
+            --code ./build \
+            --entrypoint index.js
+
 
 
 
