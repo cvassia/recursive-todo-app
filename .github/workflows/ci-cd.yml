@@ -106,8 +106,7 @@ jobs:
       # 7. Deploy to Appwrite SSR Site
       - name: Deploy to Appwrite
         run: |
-          npm install -g appwrite
-          appwrite projects deployments create \
+          npx appwrite@latest projects deployments create \
           --projectId $APPWRITE_PROJECT_ID \
           --file . \
           --entrypoint build/index.js \
