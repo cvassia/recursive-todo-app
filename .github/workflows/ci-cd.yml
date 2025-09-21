@@ -72,6 +72,7 @@ jobs:
       APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
       APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
       APPWRITE_SITE_ID: ${{ secrets.APPWRITE_SITE_ID }}
+
     steps:
       # 1. Checkout repository
       - name: Checkout code
@@ -105,14 +106,8 @@ jobs:
 
       # 7. Deploy to Appwrite SSR Site
       - name: Deploy to Appwrite
-        run: |
-          npx appwrite@latest projects deployments create \
-            --projectId $APPWRITE_PROJECT_ID \
-            --file . \
-            --entrypoint build/index.js \
-            --siteId $APPWRITE_SITE_ID \
-            --endpoint $APPWRITE_ENDPOINT \
-            --api-key $APPWRITE_API_KEY
+        run: npx appwrite@latest projects deployments create --projectId $APPWRITE_PROJECT_ID --file . --entrypoint build/index.js --siteId $APPWRITE_SITE_ID --endpoint $APPWRITE_ENDPOINT --api-key $APPWRITE_API_KEY
+
 
 
 
