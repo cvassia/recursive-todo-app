@@ -186,6 +186,21 @@ export const LogOutButton = styled.button`
   }
 `;
 
+export const DeleteUserButton = styled.button`
+   padding: 0.8rem;
+  background: transparent;
+  border: 2px solid #e54545;
+  color: #e54545;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  margin-right: 0.8rem;
+
+   &:hover {
+    opacity: 0.6;
+  }
+`;
+
 export const Badge = styled.span`
   font-size: .75rem;
   padding: .5rem .5rem;

@@ -1,3 +1,62 @@
+# name: CI/CD Deploy
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-deploy:
+#     runs-on: ubuntu-latest
+#     env:
+#       # Vercel deployment
+#       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+#       # Appwrite CLI
+#       APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
+#       APPWRITE_PROJECT: ${{ secrets.APPWRITE_PROJECT_ID }}
+#       APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+#       APPWRITE_FUNCTION_ID: ${{ secrets.APPWRITE_FUNCTION_ID }}
+#     steps:
+#       # 1. Checkout repository
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+
+#       # 2. Install Node.js
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20'
+
+#       # 3. Install dependencies
+#       - name: Install dependencies
+#         run: npm install
+
+#       # 4. Lint & format
+#       - name: Lint
+#         run: npm run lint
+#       - name: Format
+#         run: npm run format
+
+#       # 5. Run tests
+#       - name: Unit Tests
+#         run: npm test
+#       - name: UI / Integration Tests
+#         run: npm run test:ui
+
+#       # 6. Build Remix app
+#       - name: Build
+#         run: npm run build
+
+#       # 7. Deploy to Vercel
+#       - name: Deploy to Vercel
+#         run: |
+#           npm install -g vercel
+#           npx vercel deploy --prod --token $VERCEL_TOKEN --yes
+
+
+
 name: CI/CD Deploy
 
 on:
@@ -9,22 +68,17 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      # Vercel deployment
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      # Appwrite CLI
       APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
-      APPWRITE_PROJECT: ${{ secrets.APPWRITE_PROJECT_ID }}
+      APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
       APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
-      APPWRITE_FUNCTION_ID: ${{ secrets.APPWRITE_FUNCTION_ID }}
+      APPWRITE_SITE_ID: ${{ secrets.APPWRITE_SITE_ID }}
     steps:
       # 1. Checkout repository
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       # 2. Install Node.js
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
@@ -33,24 +87,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # # 4. Lint & format
-      # - name: Lint
-      #   run: npm run lint
-      # - name: Format
-      #   run: npm run format
-
-      # # 5. Run tests
-      # - name: Unit Tests
-      #   run: npm test
-      # - name: UI / Integration Tests
-      #   run: npm run test:ui
-
-      # 6. Build Remix app
+      # 4. Build Remix app
       - name: Build
         run: npm run build
 
-      # 7. Deploy to Vercel
-      - name: Deploy to Vercel
+      # 5. Deploy to Appwrite SSR Site
+      - name: Deploy to Appwrite
         run: |
-          npm install -g vercel
-          npx vercel deploy --prod --token $VERCEL_TOKEN --yes
+          npm install -g appwrite
+          appwrite projects deployments create \
+            --projectId $APPWRITE_PROJECT_ID \
+            --file ./build/index.js \
+            --entrypoint index.js \
+            --siteId $APPWRITE_SITE_ID \
+            --env-file .env \
+            --endpoint $APPWRITE_ENDPOINT \
+            --api-key $APPWRITE_API_KEY
+

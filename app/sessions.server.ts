@@ -1,4 +1,5 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import { getAdminClient } from './lib/appwrite.server';
 
 type DemoSessionData = { userId: string; email: string; };
 
@@ -41,4 +42,19 @@ export async function logout(request: Request) {
   const cookieHeader = request.headers.get('cookie');
   const session = await getSession(cookieHeader);
   return redirect('/login', { headers: { 'set-cookie': await destroySession(session) } });
+}
+
+export async function deleteUser(request: Request) {
+  const cookieHeader = request.headers.get('cookie');
+  const session = await getSession(cookieHeader);
+  const userId = session.get('userId');
+
+  if (userId) {
+    const { users } = getAdminClient();
+    await users.delete(userId);
+  }
+
+  return redirect('/login', {
+    headers: { 'Set-Cookie': await destroySession(session) },
+  });
 }
