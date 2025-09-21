@@ -83,10 +83,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
 
       # 3. Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # 4. Lint & format
       - name: Lint
@@ -104,9 +105,23 @@ jobs:
       - name: Build
         run: npm run build
 
-      # 7. Deploy to Appwrite SSR Site
+      # 7. Install Appwrite CLI
+      - name: Install Appwrite CLI
+        run: npm install -g appwrite-cli
+
+      # 8. Deploy to Appwrite SSR Site
       - name: Deploy to Appwrite
-        run: npx appwrite@latest projects deployments create --projectId $APPWRITE_PROJECT_ID --file . --entrypoint build/index.js --siteId $APPWRITE_SITE_ID --endpoint $APPWRITE_ENDPOINT --api-key $APPWRITE_API_KEY
+        run: |
+          appwrite client \
+            --endpoint $APPWRITE_ENDPOINT \
+            --projectId $APPWRITE_PROJECT_ID \
+            --key $APPWRITE_API_KEY
+          
+          appwrite deploy function \
+            --functionId $APPWRITE_SITE_ID \
+            --code . \
+            --entrypoint build/index.js
+
 
 
 
