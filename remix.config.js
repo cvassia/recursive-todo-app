@@ -4,7 +4,7 @@ dotenv.config();
 /** @type {import('@remix-run/dev').AppConfig} */
 export default {
   ignoredRouteFiles: ['**/.*'],
-  serverBuildPath: 'build/index.js',
+  serverBuildPath: 'build/index.html',
   serverModuleFormat: 'esm',
   future: {
     v7_relativeSplatPath: true,

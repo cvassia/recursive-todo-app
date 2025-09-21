@@ -144,5 +144,23 @@
             ],
             "indexes": []
         }
+    ],
+    "sites": [
+        {
+            "$id": "68cfc8bd003c2ec6b856",
+            "name": "recursive-todo-app",
+            "enabled": true,
+            "logging": true,
+            "framework": "remix",
+            "timeout": 30,
+            "installCommand": "npm install",
+            "buildCommand": "npm run build",
+            "outputDirectory": "./build",
+            "specification": "s-0.5vcpu-512mb",
+            "buildRuntime": "node-20.0",
+            "adapter": "ssr",
+            "fallbackFile": "",
+            "path": "sites/recursive-todo-app"
+        }
     ]
 }
