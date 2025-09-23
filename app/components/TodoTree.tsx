@@ -35,7 +35,7 @@ function Item({ node, isMain = false }: { node: TodoNode; isMain?: boolean }) {
     }
   }, [node.children.length, adding, prevCount]);
 
-
+  console.log("first")
   return (
     <List $isMain={isMain}>
       <Row>
