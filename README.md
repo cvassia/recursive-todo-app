@@ -4,6 +4,10 @@ A cross-platform task management app that supports **unlimited nested tasks**, a
 
 [Live Demo](https://recursivetodoapp.cvassia.com/) • [GitHub](https://github.com/cvassia/recursive-todo-app)
 
+
+![Recursive ToDo GIF](https://github.com/cvassia/recursive-todo-app/raw/main/assets/demo.gif)  
+
+
 ---
 
 ## Overview
