@@ -1,58 +1,96 @@
-# Recursive To‑Do App (Remix + Appwrite)
+# Recursive ToDo App
 
-A to‑do app where each task can have infinite nested sub‑tasks. Built with Remix (TypeScript) and Appwrite.
+A cross-platform task management app that supports **unlimited nested tasks**, allowing users to organize complex projects with hierarchical workflows. Built with **TypeScript, Remix, and Appwrite**, it combines a recursive UI with full backend support for authentication, storage, and automated workflows.
+
+[Live Demo](https://recursivetodoapp.cvassia.com/) • [GitHub](https://github.com/cvassia/recursive-todo-app)
+
+---
+
+## Overview
+
+Recursive ToDo App helps users structure tasks in deeply nested hierarchies rather than traditional flat lists. It is ideal for managing complex projects, personal productivity, or team workflows.
+
+Users can create tasks, add subtasks recursively, mark them as complete, and organize projects effortlessly — all within a secure, scalable system.
+
+---
+
+## Role & Contribution
+
+I built the entire application end-to-end, including:
+
+- Recursive UI components for unlimited sub-task nesting  
+- Integration with Appwrite for authentication, database, and serverless functions  
+- Form validation using **Zod**  
+- Automated workflows (welcome emails)  
+- Unit testing for recursive logic with **Vitest**
+
+---
+
+## Architecture
+
+- **Frontend:** Remix with TypeScript, typed API layer  
+- **Recursive Component:** Dynamic tree rendering for tasks and subtasks  
+- **Backend:** Appwrite for authentication, database, and serverless functions  
+- **Form Validation:** Zod schemas for consistent and safe input  
+- **Testing:** Vitest for core recursive algorithms  
+
+---
 
 ## Features
 
-- signup - login: register/login with email/password, the new user's credentials stored in Appwrite.
-- Using an Appwrite Function a welcome email is automatically send to the user upon successful registration.
-- Recursive to‑do list component with add / add sub‑task / mark complete / delete.
-- Form validation using Zod.
-- Unit test for the tree builder using Vitest.
+- Unlimited sub-task nesting with dynamic tree rendering  
+- Create, update, delete, and mark tasks as complete  
+- Secure user registration and login  
+- Form validation with Zod  
+- Automated welcome emails using Appwrite Functions  
+- Unit-tested recursive logic for reliability  
 
+---
 
-## Appwrite resources
+## Challenges & Solutions
 
-   - Project: get "PROJECT_ID" and set endpoint.
-   - Database: create "todo_db".
-   - Collection: "tasks" with attributes:
-      title (string, required)
-      completed (boolean, default "false")
-      parentId (string, default null if there are no subtasks)
-      ownerId (string, required)
+- **Recursive Rendering:** Built efficient React components to handle deep nesting without performance issues  
+- **Data Consistency:** Structured Appwrite database with hierarchical references for tasks  
+- **Validation:** Implemented Zod schemas to ensure clean, predictable input  
+- **Automated Workflows:** Configured serverless functions for seamless user onboarding  
 
+---
 
+## Key Learnings
 
-### CI/CD Plan Steps
+- Advanced recursive component patterns in React and Remix  
+- Full-stack integration with Appwrite services  
+- Designing form validation pipelines with Zod  
+- Writing unit tests for recursive algorithms  
+- Structuring scalable, maintainable applications  
 
-1. **Checkout Code**
-   - Pull the latest code from the Git repository : https://github.com/cvassia/recursive-todo-app.git.
+---
 
-2. **Install Dependencies**
-   - Run "npm install" to install all required Node.js packages.
+## Tech Stack
 
-3. **Linting & Formatting**
-   - Run ESLint to enforce code quality and best practices.
-   - Run Prettier to auto-format code (optional).
+- **Frontend:** TypeScript, Remix  
+- **Backend:** Node.js, Appwrite (Authentication, Database, Functions)  
+- **Validation:** Zod  
+- **Testing:** Vitest  
 
-4. **Run the App**
-  - Run "npm run dev" to start the application in development mode.
+---
 
+## Getting Started
 
-5. **Testing**
+```bash
+git clone https://github.com/cvassia/recursive-todo-app.git
+cd recursive-todo-app
+npm install
+npm run dev
+Open http://localhost:3000 in your browser.
+
+ ## Testing
+
    - Run "npm test" for unit tests.
    - Run "npm run test:ui" for UI/integration tests.
 
-6. **Build**
-   - Compile the Remix application using `npm run build`.
-
-7. **Deployment**
-   - Deploy the built application to a hosting platform - Vercel, website: https://recursive-todo-app-two.vercel.app.
 
 
-## Tools / Platforms:
-For this small Github-based project, Github Actions would be chosen because it is fully integrated with GitHub,requires low maintenance and is easy to configure.
-GitHub Actions: Runs workflow file on every push or pull request, integrating all previous (from 2 to 7) CI/CD steps automatically.
 
 
 
